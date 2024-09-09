@@ -3,3 +3,5 @@ install
 log
 src/fire_detection_notifier/fire_detection_notifier/sub/__pycache__
 src/fire_detection_notifier/fire_detection_notifier/utils/__pycache__
+src/fire_detection_notifier/fire_detection_notifier/yolov9-c-fire.pt
+src/fire_detection_notifier/fire_detection_notifier/fire.mp4
