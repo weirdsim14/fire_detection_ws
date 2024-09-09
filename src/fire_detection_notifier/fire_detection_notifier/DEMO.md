@@ -1,0 +1,1 @@
+python detect.py --weights yolov9-c-fire.pt --source rtsp://192.168.168.105:4000/fl
