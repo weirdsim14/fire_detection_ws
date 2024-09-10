@@ -38,7 +38,7 @@ def add_red_overlay(image, intensity=0.1):
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov9-c-fire.pt',  # model path or triton URL
-        source=ROOT / 'fire.mp4',  # file/dir/URL/glob/screen/0(webcam)
+        source='rtsp://192.168.0.7:4000/fl',  # file/dir/URL/glob/screen/0(webcam)
         data=ROOT / 'data/coco.yaml',  # dataset.yaml path
         imgsz=(640, 640),  # inference size (height, width)
         conf_thres=0.25,  # confidence threshold
@@ -66,14 +66,15 @@ def run(
         vid_stride=1,  # video frame-rate stride
 ):
         # Initialize ROS2 and create a node instance
-    rclpy.init()
-    ros2_node = FireDetectionPublisher()
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
     is_url = source.lower().startswith(('rtsp://', 'rtmp://', 'http://', 'https://'))
     webcam = source.isnumeric() or source.endswith('.txt') or (is_url and not is_file)
     screenshot = source.lower().startswith('screen')
+    rclpy.init()
+    ros2_node = FireDetectionPublisher()
+
     if is_url and is_file:
         source = check_file(source)  # download
 
@@ -216,7 +217,7 @@ def run(
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov9-c-fire.pt', help='model path or triton URL')
-    parser.add_argument('--source', type=str, default=ROOT / 'fire.mp4', help='file/dir/URL/glob/screen/0(webcam)')
+    parser.add_argument('--source', type=str, default='rtsp://192.168.0.7:4000/fl', help='file/dir/URL/glob/screen/0(webcam)')
     parser.add_argument('--data', type=str, default=ROOT / 'data/coco128.yaml', help='(optional) dataset.yaml path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
     parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
